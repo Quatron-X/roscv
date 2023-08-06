@@ -8,7 +8,6 @@ import rospy, cv2
 from roscv_modules import vision_module
 from cv_bridge import CvBridge, CvBridgeError
 from sensor_msgs.msg import Image
-from roscv.msg import VisionResult
 
 # vision module
 vm = vision_module.VisionModule()
@@ -25,7 +24,6 @@ def main():
     rospy.init_node("vision")
     # ros publisher
     frame_pub = rospy.Publisher("vision", Image, queue_size=10)
-    result_pub = rospy.Publisher("vision_result", VisionResult, queue_size=10)
     # publish frequency in Hz
     rate = rospy.Rate(10) # 10 Hz
     
@@ -41,15 +39,11 @@ def main():
             # frame_msg = bridge.cv2_to_imgmsg(frame, "passthrough") # debug
             frame_msg.header.stamp = rospy.Time().now()
 
-            # pass the bool value detected into the VisionResult message
-            result_msg = VisionResult(detected)
-
             # log into screen, node log, and /rosout
             rospy.loginfo("frame processed")
 
             # publish message to topic vision
             frame_pub.publish(frame_msg)
-            result_pub.publish(result_msg)
             rospy.loginfo("frame sent")
 
         except CvBridgeError as err:

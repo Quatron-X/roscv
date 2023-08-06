@@ -9,9 +9,9 @@ from roscv_modules import vision_module
 from roscv.msg import VisionResult
 
 # Import the API.
-from ..src.local_iq_gnc.py_gnc_functions import *
+from local_iq_gnc.py_gnc_functions import *
 # To print colours (optional).
-from ..src.local_iq_gnc.PrintColours import *
+from local_iq_gnc.PrintColours import *
 
 global drone
 
@@ -36,8 +36,13 @@ def main():
     # Subscribe to vision_result topic
     rospy.Subscriber("vision_result", VisionResult, disarming_function)
 
+    rospy.spin()
+
 def disarming_function(data):
     if data.data:
         rospy.loginfo("OBJECCT DETECTED")
 
         drone.disarm()
+
+if __name__ == '__main__':
+    main()

@@ -164,8 +164,10 @@ catkin_install_python(PROGRAMS
   # scripts/my_python_script
   src/listener.py
   src/ros_vision.py
+  src/ros_vision_old.py
   src/talker.py
   src/vision_listener.py
+  src/vision_arm.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 

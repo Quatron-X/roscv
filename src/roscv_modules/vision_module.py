@@ -39,13 +39,15 @@ class VisionModule:
         self.pil_mask = Image.fromarray(self.mask)
         self.bbox = self.pil_mask.getbbox()    
 
+        detected = False
+
         if self.bbox is not None:
             self.x1, self.y1, self.x2, self.y2 = self.bbox
             if (abs(self.x2-self.x1) >= 5) and (abs(self.y2-self.y1) >= 5):
                 frame = cv2.rectangle(frame, (self.x1, self.y1), (self.x2, self.y2), (0, 255, 0), 5)
-                self.detected = True
+                detected = True
             else:
-                self.detected = False
+                detected = False
 
 
-        return frame, self.mask, self.detected
+        return frame, self.mask, detected
