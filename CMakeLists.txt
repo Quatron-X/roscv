@@ -169,6 +169,7 @@ catkin_install_python(PROGRAMS
   src/vision_listener.py
   src/ros_vision_led.py
   scripts/vision_arm.py
+  src/ros_camera.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 
