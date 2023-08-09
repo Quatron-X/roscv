@@ -107,7 +107,7 @@ catkin_package(
   INCLUDE_DIRS include
   LIBRARIES roscv
   CATKIN_DEPENDS cv_bridge roscpp rospy std_msgs message_runtime
-  DEPENDS system_lib
+#   DEPENDS system_lib
 )
 
 ###########
@@ -167,7 +167,8 @@ catkin_install_python(PROGRAMS
   src/ros_vision_old.py
   src/talker.py
   src/vision_listener.py
-  src/vision_arm.py
+  src/ros_vision_led.py
+  scripts/vision_arm.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 

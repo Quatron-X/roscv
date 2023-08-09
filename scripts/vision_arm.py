@@ -13,13 +13,12 @@ from local_iq_gnc.py_gnc_functions import *
 # To print colours (optional).
 from local_iq_gnc.PrintColours import *
 
-global drone
-
-def main():
+def setup():
     # Initialize ROS node
     rospy.init_node("vision_arm")
 
     # Create an object for the navigation API
+    global drone
     drone = gnc_api()
     
     # Wait for FCU connection
@@ -30,19 +29,30 @@ def main():
     # Local reference frame
     drone.initialize_local_frame()
 
-    # Arm command
-    drone.arm()
+    # Start the loop
+    main()
 
+def main():
     # Subscribe to vision_result topic
     rospy.Subscriber("vision_result", VisionResult, disarming_function)
 
     rospy.spin()
 
 def disarming_function(data):
-    if data.data:
-        rospy.loginfo("OBJECCT DETECTED")
+    # Verify FCU connection
+    connected = drone.wait4connect()
+    # Verify mode switch (to guided)
+    guided = drone.wait4start()
 
-        drone.disarm()
+    if (connected==0) and (guided==0):
+        if data.detected and not drone.current_state_g.armed:
+            rospy.loginfo("OBJECT DETECTED")
+            drone.arm()
+        elif not data.detected and drone.current_state_g.armed:
+            rospy.loginfo("OBJECT GONE")
+            drone.disarm()
+    else:
+        rospy.loginfo("GUIDED STOPPED")
 
 if __name__ == '__main__':
-    main()
+    setup()

@@ -16,8 +16,8 @@ def callback(data):
         rospy.loginfo("frame received")
     
         try:
-            frame = bridge.imgmsg_to_cv2(data, "bgr8")
-            # frame = bridge.imgmsg_to_cv2(data, "passthrough") # debug
+            # frame = bridge.imgmsg_to_cv2(data, "bgr8")
+            frame = bridge.imgmsg_to_cv2(data, "passthrough") # debug
             cv2.imshow("Received Frame", frame)
             cv2.waitKey(1)
         except CvBridgeError as err:
