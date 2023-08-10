@@ -6,7 +6,7 @@ Listener node for computer vision, GCS
 
 import rospy, cv2
 from cv_bridge import CvBridge, CvBridgeError
-from sensor_msgs.msg import Image
+from sensor_msgs.msg import Image, CompressedImage
 
 bridge = CvBridge()
 
@@ -17,7 +17,8 @@ def callback(data):
     
         try:
             # frame = bridge.imgmsg_to_cv2(data, "bgr8")
-            frame = bridge.imgmsg_to_cv2(data, "passthrough") # debug
+            # frame = bridge.imgmsg_to_cv2(data, "mono8") # debug
+            frame = bridge.compressed_imgmsg_to_cv2(data, desired_encoding="passthrough")
             cv2.imshow("Received Frame", frame)
             cv2.waitKey(1)
         except CvBridgeError as err:
@@ -34,7 +35,8 @@ def main():
     rospy.loginfo("subscribing...")
 
     # rospy subscriber
-    rospy.Subscriber("vision", Image, callback) # calls callback() passing Image msg from message vision
+    # rospy.Subscriber("vision", Image, callback) # calls callback() passing Image msg from message vision
+    rospy.Subscriber("vision", CompressedImage, callback)
 
     # spin() keeps this python running until the node is stopped
     rospy.spin()
